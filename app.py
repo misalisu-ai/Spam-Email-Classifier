@@ -67,20 +67,21 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             transformed_text = vectorizer.transform([email_input]).toarray()
             
             # Step B: Model 1 - Neural Network Execution
-            # .item() extracts the pure, raw Python float from the numpy array immediately
-            nn_raw_score = float(nn_model.predict(transformed_text).item())
+            nn_raw_score = float(nn_model.predict(transformed_text))
             nn_is_spam = 1 if nn_raw_score >= 0.5 else 0
             
-            # Simple, clean math without type clashes
             if nn_is_spam == 1:
                 nn_certainty = nn_raw_score
             else:
                 nn_certainty = 1.0 - nn_raw_score
             
             # Step C: Model 2 - Multinomial Naive Bayes Execution
-            nb_is_spam = int(nb_model.predict(transformed_text).item())
+            # Using flat safely flattens any array shape to get the clean 0 or 1 integer
+            nb_is_spam = int(nb_model.predict(transformed_text).flat)
             nb_probabilities = nb_model.predict_proba(transformed_text)
-            nb_certainty = float(nb_probabilities[nb_is_spam].item())
+            
+            # Secure lookup using the clean integer
+            nb_certainty = float(nb_probabilities[nb_is_spam])
         st.markdown("---")
         st.subheader("📊 Comparative Prediction Analysis")
         st.write("To fulfill the project requirements completely, your input text was processed independently by both models:")
