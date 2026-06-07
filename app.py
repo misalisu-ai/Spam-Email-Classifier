@@ -43,7 +43,7 @@ with st.sidebar:
     st.write("- Victor Chimbo")
     st.write("- Godstime Ekan")
     st.markdown("---")
-    st.write("**Course:** TechCrush AI/ML Cohort 5")
+    st.write("**Course:** TechCrush AI/ML Cohort 6")
 
 # Design the Main User Interface
 st.title("Intelligent Spam Email Classifier")
