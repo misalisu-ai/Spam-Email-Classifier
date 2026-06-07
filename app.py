@@ -37,7 +37,7 @@ vectorizer, nn_model, nb_model = load_saved_files()
 
 # 3. Create the Sidebar with Group Info for Grading
 with st.sidebar:
-    st.image("https://img.shields.io/badge/TechCrush_Cohort_5-Capstone_Project-blue?style=for-the-badge")
+    st.image("https://img.shields.io/badge/TechCrush_Cohort_6-Capstone_Project-blue?style=for-the-badge")
     st.header("👥 Group 13 Members")
     st.write("- Muhammad Ibrahim Salisu")
     st.write("- Orjiakor Favour")
@@ -66,9 +66,9 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             # Step A: Turn the input text into a numerical matrix matching our 5,695 features
             transformed_text = vectorizer.transform([email_input]).toarray()
             
-           # Step B: Model 1 - Neural Network Execution
-            # We add to dive inside the 2D array and get the actual decimal score
+            # Step B: Model 1 - Neural Network Execution
             nn_predictions_array = nn_model.predict(transformed_text)
+            # FIXED: Grabbing the specific element inside the 2D array matrix [[score]]
             nn_raw_score = float(nn_predictions_array)
             nn_is_spam = 1 if nn_raw_score >= 0.5 else 0
             
@@ -78,12 +78,14 @@ if st.button("Classify Email", type="primary", use_container_width=True):
                 nn_certainty = 1.0 - nn_raw_score
             
             # Step C: Model 2 - Multinomial Naive Bayes Execution
-            # We use to safely grab the single prediction from the Naive Bayes array
             nb_predictions_array = nb_model.predict(transformed_text)
+            # FIXED: Safely extracting the prediction element
             nb_is_spam = int(nb_predictions_array)
             
+            # FIXED: Selecting the first row of probabilities to read index properly
             nb_probabilities = nb_model.predict_proba(transformed_text)
             nb_certainty = float(nb_probabilities[nb_is_spam])
+
         st.markdown("---")
         st.subheader("📊 Comparative Prediction Analysis")
         st.write("To fulfill the project requirements completely, your input text was processed independently by both models:")
