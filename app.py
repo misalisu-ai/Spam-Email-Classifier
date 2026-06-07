@@ -86,11 +86,6 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             nb_probabilities = nb_model.predict_proba(transformed_text)
             nb_certainty = float(nb_probabilities[0][nb_is_spam])
 
-            
-            # FIXED: Selecting the first row of probabilities to read index properly
-            nb_probabilities = nb_model.predict_proba(transformed_text)
-            nb_certainty = float(nb_probabilities[nb_is_spam])
-
         st.markdown("---")
         st.subheader("📊 Comparative Prediction Analysis")
         st.write("To fulfill the project requirements completely, your input text was processed independently by both models:")
