@@ -66,8 +66,10 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             # Step A: Turn the input text into a numerical matrix matching our 5,695 features
             transformed_text = vectorizer.transform([email_input]).toarray()
             
-            # Step B: Model 1 - Neural Network Execution
-            nn_raw_score = float(nn_model.predict(transformed_text))
+           # Step B: Model 1 - Neural Network Execution
+            # We add to dive inside the 2D array and get the actual decimal score
+            nn_predictions_array = nn_model.predict(transformed_text)
+            nn_raw_score = float(nn_predictions_array)
             nn_is_spam = 1 if nn_raw_score >= 0.5 else 0
             
             if nn_is_spam == 1:
@@ -76,11 +78,11 @@ if st.button("Classify Email", type="primary", use_container_width=True):
                 nn_certainty = 1.0 - nn_raw_score
             
             # Step C: Model 2 - Multinomial Naive Bayes Execution
-            # Using flat safely flattens any array shape to get the clean 0 or 1 integer
-            nb_is_spam = int(nb_model.predict(transformed_text).flat)
-            nb_probabilities = nb_model.predict_proba(transformed_text)
+            # We use to safely grab the single prediction from the Naive Bayes array
+            nb_predictions_array = nb_model.predict(transformed_text)
+            nb_is_spam = int(nb_predictions_array)
             
-            # Secure lookup using the clean integer
+            nb_probabilities = nb_model.predict_proba(transformed_text)
             nb_certainty = float(nb_probabilities[nb_is_spam])
         st.markdown("---")
         st.subheader("📊 Comparative Prediction Analysis")
