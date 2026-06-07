@@ -77,12 +77,12 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             else:
                 nn_certainty = 1.0 - nn_raw_score
             
-                        # Step C: Model 2 - Multinomial Naive Bayes Execution
+            # Step C: Model 2 - Multinomial Naive Bayes Execution
             nb_predictions_array = nb_model.predict(transformed_text)
             # FIXED: Safely extracting the prediction element from the array
             nb_is_spam = int(nb_predictions_array[0])
             
-            # FIXED: Selecting row 0 first, then accessing the predicted class column index
+            # FIXED: Grab row 0 first, then pull the target class probability column
             nb_probabilities = nb_model.predict_proba(transformed_text)
             nb_certainty = float(nb_probabilities[0][nb_is_spam])
 
