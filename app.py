@@ -69,7 +69,7 @@ if st.button("Classify Email", type="primary", use_container_width=True):
             # Step B: Model 1 - Neural Network Execution
             nn_predictions_array = nn_model.predict(transformed_text)
             # FIXED: Grabbing the specific element inside the 2D array matrix [[score]]
-            nn_raw_score = float(nn_predictions_array)
+            nn_raw_score = float(nn_predictions_array[0][0])
             nn_is_spam = 1 if nn_raw_score >= 0.5 else 0
             
             if nn_is_spam == 1:
@@ -78,9 +78,11 @@ if st.button("Classify Email", type="primary", use_container_width=True):
                 nn_certainty = 1.0 - nn_raw_score
             
             # Step C: Model 2 - Multinomial Naive Bayes Execution
-            nb_predictions_array = nb_model.predict(transformed_text)
-            # FIXED: Safely extracting the prediction element
-            nb_is_spam = int(nb_predictions_array)
+            nb_is_spam = int(nb_predictions_array[0])
+
+            # Get the probability array for the first row, then select the predicted class index
+            nb_probabilities = nb_model.predict_proba(transformed_text)[0]
+            nb_certainty = float(nb_probabilities[nb_is_spam])
             
             # FIXED: Selecting the first row of probabilities to read index properly
             nb_probabilities = nb_model.predict_proba(transformed_text)
