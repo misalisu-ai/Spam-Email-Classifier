@@ -40,6 +40,7 @@ with st.sidebar:
     st.image("https://img.shields.io/badge/TechCrush_Cohort_6-Capstone_Project-blue?style=for-the-badge")
     st.header("👥 Group 13 Members")
     st.write("- Muhammad Ibrahim Salisu")
+    st.write("- Adeogun Oluwakorede")
     st.write("- Orjiakor Favour")
     st.write("- Victor Chimbo")
     st.write("- Godstime Ekan")
